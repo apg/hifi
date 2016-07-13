@@ -1,0 +1,128 @@
+/*
+e6eff9a3
+6e80cfa3
+5054bda3
+35387fa3
+*/
+
+body {
+ background: #fff;
+ font-family: monospace;
+ font-size: 100%;
+ text-align: center;
+}
+
+h1, h2 {
+ font-size: 1.1em;
+ font-weight: bold;
+}
+
+h1 a, h2 a, h3 a {
+ text-decoration: none;
+}
+
+a {
+
+}
+a:visited {
+
+}
+
+.wrapper {
+ width: 650px;
+ margin: 0 auto;
+ text-align: left;
+}
+
+.wrapper header {
+ text-align: left;
+}
+
+.wrapper header nav {
+ text-align: right;
+ font-size: 1.1em;
+}
+.wrapper header nav a {
+ text-decoration: none;
+}
+
+.wrapper header h1 {
+ padding-top: 40px;
+ text-indent: -9999em;
+}
+
+.wrapper header h1 a {
+ display: block;
+ width: 255px;
+ height: 171px;
+ background: url(/static/img/logo.png) no-repeat;
+ margin: 0;
+}
+
+.wrapper main {
+ padding-top: 30px;
+ text-align: left;
+}
+
+.wrapper main hr {
+ background: #e6eff9;
+ height: 1px;
+ border: 0;
+}
+
+.wrapper main article,
+.wrapper main section {
+ line-height: 1.7;
+}
+
+.wrapper main pre {
+ margin: 10px;
+}
+
+.wrapper main pre code {
+ display: block;
+ background-color: #e6eff9;
+ -webkit-border-radius: 5px;
+ -moz-border-radius: 5px;
+ border-radius: 5px; 
+ padding: 10px;
+}
+
+.wrapper main.index h2 {
+}
+
+.wrapper main.index h2 em {
+ vertical-align: middle;
+ font-style: normal;
+ color: #999;
+}
+
+.wrapper footer {
+ margin-top: 60px;
+ padding-top: 32px;
+ color: #666;
+}
+
+.wrapper footer p {
+ padding-left: 48px;
+ padding-right: 48px;
+}
+
+.wrapper footer p.copyright {
+ padding-top: 30px;
+ text-align: center;
+}
+
+
+#signup ul {
+ list-style: none;
+}
+
+#signup_form .form-text {
+ border: 0;
+ border-bottom: 1px solid #000;
+}
+
+#signup_form {
+ padding: 0 10px 0 10px;
+}
