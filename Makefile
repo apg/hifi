@@ -91,7 +91,7 @@ $(BUILDDIR)/interviews.html: $(interview_srcs) $(index_deps)
 	   match(c, /((.*\/)+)(.*)$$/, arr)
 	   sub(/\.md$$/, ".html", arr[3])
 	   return arr[3]
-	}{print "* [" $$4 "](/" filename($$1) ")\n"}' \
+	}{print "* [" $$4 "](/interviews/" filename($$1) ")\n"}' \
 	| $(THEME) $(THEMEOPTS) -t $(THEMEDIR)/interviews.html -o $@
 
 
