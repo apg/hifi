@@ -32,22 +32,26 @@ SRCDIR = src
 BUILDDIR = build
 THEMEDIR = theme
 PAGEDIR = $(SRCDIR)/page
+INTERVIEWDIR = $(SRCDIR)/interviews
 ENTRYDIR = $(SRCDIR)/entry
 STATICDIR = $(SRCDIR)/static
 
 entry_deps = $(THEMEDIR)/entry.html $(THEMEDIR)/footer.html $(THEMEDIR)/header.html $(THEMEDIR)/head.html
 page_deps = $(THEMEDIR)/page.html $(THEMEDIR)/footer.html $(THEMEDIR)/header.html $(THEMEDIR)/head.html
+interview_deps = $(THEMEDIR)/page.html $(THEMEDIR)/footer.html $(THEMEDIR)/header.html $(THEMEDIR)/head.html
 index_deps = $(THEMEDIR)/index.html $(THEMEDIR)/footer.html $(THEMEDIR)/header.html $(THEMEDIR)/head.html
 
 entry_srcs = $(wildcard $(ENTRYDIR)/*.md)
 page_srcs = $(wildcard $(PAGEDIR)/*.md)
+interview_srcs = $(wildcard $(INTERVIEWDIR)/*.md)
 
 entry_targets = $(addprefix $(BUILDDIR)/, $(addsuffix .html, $(basename $(notdir $(entry_srcs)))))
 page_targets = $(addprefix $(BUILDDIR)/page/, $(addsuffix .html, $(basename $(notdir $(page_srcs)))))
+interview_targets = $(addprefix $(BUILDDIR)/interviews/, $(addsuffix .html, $(basename $(notdir $(interview_srcs)))))
 
 $(shell mkdir -p $(BUILDDIR))
 
-all: static entries pages $(BUILDDIR)/index.html $(BUILDDIR)/feed.xml $(BUILDDIR)/archive.html
+all: static entries pages interviews $(BUILDDIR)/index.html $(BUILDDIR)/interviews.html $(BUILDDIR)/feed.xml $(BUILDDIR)/archive.html
 
 .ONESHELL:
 $(BUILDDIR)/index.html: $(entry_srcs) $(index_deps)
@@ -76,6 +80,19 @@ $(BUILDDIR)/archive.html: $(entry_srcs) $(index_deps)
 	   return arr[3]
 	}{print "* [" $$4 "](/" filename($$1) ")\n"}' \
 	| $(THEME) $(THEMEOPTS) -t $(THEMEDIR)/archive.html -o $@
+
+$(BUILDDIR)/interviews.html: $(interview_srcs) $(index_deps)
+	@echo "Building interviews index"
+	@for n in $(interview_srcs); do
+		DD=$$(head -n 3 $$n | tail -n 1 | sed -e 's/-//g')
+		echo $$n $$DD $$(head -n 3 $$n | tail -n 1) $$(head -n 1 $$n);
+	done | sort -r -n -k 2 -t '%' \
+	| awk -F ' % ' 'function filename(c) {
+	   match(c, /((.*\/)+)(.*)$$/, arr)
+	   sub(/\.md$$/, ".html", arr[3])
+	   return arr[3]
+	}{print "* [" $$4 "](/" filename($$1) ")\n"}' \
+	| $(THEME) $(THEMEOPTS) -t $(THEMEDIR)/interviews.html -o $@
 
 
 # '%Y-%m-%dT%H:%M:%SZ'
@@ -110,6 +127,9 @@ $(BUILDDIR)/feed.xml: $(entry_srcs)
 entries: $(entry_targets)
 	@cp -a $(ENTRYDIR)/*.md $(BUILDDIR)/
 
+interviews: $(interview_targets)
+	@cp -a $(INTERVIEWDIR)/*.md $(BUILDDIR)/interviews
+
 pages: $(page_targets)
 static:
 	@mkdir -p $(BUILDDIR)/static
@@ -123,6 +143,12 @@ $(BUILDDIR)/page/%.html: $(PAGEDIR)/%.md $(page_deps)
 	@echo "Building $*.html"
 	@mkdir -p $(BUILDDIR)/page
 	@$(THEME) $(THEMEOPTS) -t $(THEMEDIR)/page.html -o $@ $<
+
+$(BUILDDIR)/interviews/%.html: $(INTERVIEWDIR)/%.md $(interview_deps)
+	@echo "Building $*.html"
+	@mkdir -p $(BUILDDIR)/interviews
+	@$(THEME) $(THEMEOPTS) -t $(THEMEDIR)/page.html -o $@ $<
+
 
 .ONESHELL:
 sync:
